@@ -5,6 +5,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup as bs4
 from datetime import datetime, timedelta
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options as chromeOptions
@@ -120,7 +121,6 @@ class LoginBB():
 
 
         time.sleep(2)
-        driver.get("https://cuchd.blackboard.com/ultra/course")
         currentURL = str(driver.current_url)
 
 
@@ -197,7 +197,7 @@ class ClassManagement():
         spanToBeOpened = ""
         linkNotAvailable = True
         timeRemainsForNextClass = True
-        firstTime = True
+
 
         while(linkNotAvailable and timeRemainsForNextClass):
 
@@ -217,23 +217,28 @@ class ClassManagement():
             
 
             driver.get('https://cuchd.blackboard.com/ultra/course')
+            WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//h3[@class='assorted-dates-label']"))).click()
 
 
-            if firstTime:
-                firstTime=False
+            # scroling page down
+            while True:
+                html = driver.find_element_by_tag_name("html")
 
-                # finding which class to join
-                while(networkAvaliable):
+                if networkAvaliable:
+                    # finding which class to join
                     try:
                         WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, f"//h4[@title='{classJoinName.upper()}']"))).click()
                         break
                     except:
                         logger.error("Unable to open the current Lecture")
                         is_connected()
-                        driver.refresh()
-            else:
-                is_connected()
-                driver.refresh()
+                    html.send_keys(Keys.DOWN)
+                    html.send_keys(Keys.DOWN)
+                    html.send_keys(Keys.DOWN)
+                    html.send_keys(Keys.DOWN)
+                else:
+                    is_connected()
+                    driver.refresh()
 
 
             # Checking if connection is Available or not
@@ -241,7 +246,13 @@ class ClassManagement():
             if not networkAvaliable:
                 is_connected()
 
+
+            try:
+                WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='ms-Button-icon icon-89']"))).click()
+            except:
+                pass
             
+
             # opening dropdown to find class joining button
             while(networkAvaliable):
                 try:
