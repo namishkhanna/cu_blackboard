@@ -63,8 +63,7 @@ def signal_handling(signum,frame):
         print()
         if choice:
             choice = choice[0]
-            if choice=='y':
-                input()        
+            if choice=='y':       
                 sys.exit()
             elif (choice!='y') and (choice!='n'):
                 logger.warning("Enter a valid input (y or n) !!!")
