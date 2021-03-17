@@ -88,7 +88,9 @@ class LoginBB():
                 firefox_options.add_argument("--use-fake-ui-for-media-stream")
                 firefox_options.add_argument('log-level=3')
                 firefox_options.add_argument("--start-maximized")
+                firefox_options.set_preference("media.navigator.permission.disabled", True)
                 driver = webdriver.Firefox(options=firefox_options)
+                driver.maximize_window()
             except:
                 logger.error("Check if geeckodriver are in the path")
                 input()
@@ -287,7 +289,7 @@ class ClassManagement():
             if(currentTime.time()>=nextClassJoinTime.time()):
                 timeRemainsForNextClass = False
             
-            time.sleep(30)
+            time.sleep(20)
 
         LOCK = False
 
