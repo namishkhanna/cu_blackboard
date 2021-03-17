@@ -15,7 +15,7 @@ global USERDATAFILENAME, TIMETABLE, CHROMEPATH
 
 
 
-CURRENT_VERSION = "v4.0"
+CURRENT_VERSION = "v5.0"
 USERDATAFILENAME = "userData.txt"
 TIMETABLE = "rptStudentTimeTable.csv"
 temp = str(os.path.normpath("\\AppData\\yal\\Google\\Chrome\\User Data\\Default"))
